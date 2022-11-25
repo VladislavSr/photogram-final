@@ -1,0 +1,27 @@
+class UsersController < ApplicationController
+
+  
+  def index
+    @users = User.all.order({ :username => :asc })
+
+    render({ :template => "users/index.html" })
+  end
+
+  def show
+    the_username = params.fetch("the_username")
+    @user = User.where({ :username => the_username }).at(0)
+
+    render({ :template => "users/show.html.erb" })
+  end
+
+  def update
+    the_id = params.fetch("the_user_id")
+    user = User.where({ :id => the_id }).at(0)
+
+    user.username = params.fetch("input_username")
+
+    user.save
+
+    redirect_to("/users/#{user.username}")
+  end
+end

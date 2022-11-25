@@ -1,8 +1,8 @@
 class PhotosController < ApplicationController
   def index
-    matching_photos = Photo.all
+    @photos = Photo.all
 
-    @list_of_photos = matching_photos.order({ :created_at => :desc })
+    #@list_of_photos = matching_photos.order({ :created_at => :desc })
 
     render({ :template => "photos/index.html.erb" })
   end
@@ -45,7 +45,7 @@ class PhotosController < ApplicationController
 
     if the_photo.valid?
       the_photo.save
-      redirect_to("/photos/#{the_photo.id}", { :notice => "Photo updated successfully."} )
+      redirect_to("/photos/#{the_photo.id}", { :notice => "Photo updated successfully." })
     else
       redirect_to("/photos/#{the_photo.id}", { :alert => the_photo.errors.full_messages.to_sentence })
     end
@@ -57,6 +57,6 @@ class PhotosController < ApplicationController
 
     the_photo.destroy
 
-    redirect_to("/photos", { :notice => "Photo deleted successfully."} )
+    redirect_to("/photos", { :notice => "Photo deleted successfully." })
   end
 end

@@ -1,4 +1,12 @@
 Rails.application.routes.draw do
+  # UPDATE
+  get("/update_user/:the_user_id", { :controller => "users", :action => "update" })
+  
+    # READ
+    get("/users", { :controller => "users", :action => "index" })
+    get("/users/:the_username", { :controller => "users", :action => "show" })
+
+
   # Routes for the Comment resource:
 
   # CREATE
@@ -62,6 +70,8 @@ Rails.application.routes.draw do
   post("/insert_photo", { :controller => "photos", :action => "create" })
           
   # READ
+  get("/", { :controller => "photos", :action => "index" })
+
   get("/photos", { :controller => "photos", :action => "index" })
   
   get("/photos/:path_id", { :controller => "photos", :action => "show" })
