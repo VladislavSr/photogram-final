@@ -19,11 +19,12 @@ class PhotosController < ApplicationController
 
   def create
     the_photo = Photo.new
-    the_photo.caption = params.fetch("query_caption")
-    the_photo.comments_count = params.fetch("query_comments_count")
-    the_photo.image = params.fetch("query_image")
-    the_photo.likes_count = params.fetch("query_likes_count")
-    the_photo.owner_id = params.fetch("query_owner_id")
+    the_photo.comments_count = 0
+    the_photo.image = params.fetch("input_image")
+    the_photo.likes_count = 0
+    the_photo.owner_id = session.fetch(:user_id)
+    the_photo.caption = params.fetch("input_caption")
+    #the_photo.poster=session.fetch(@current_user.username)
 
     if the_photo.valid?
       the_photo.save
