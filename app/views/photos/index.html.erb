@@ -1,16 +1,24 @@
 <h1>List of photos</h1>
 <% if session.fetch(:user_id)==nil%>
 <%else%>
-<form action="/insert_photo_record">
+
+
+<form action="/insert_photo_record" method="post" class="form-horizontal" enctype="multipart/form-data">
   <label for="browser_input">Image</label>
-  <input id="browser_input" type="text" name="input_image" placeholder="Enter a URL for the image...">
+  <input id="browser_input" type="file" name="input_image" id="input_image" class="form-control">
+
 
   <label for="browser_caption">Caption</label>
   <textarea id="browser_caption" name="input_caption" placeholder="Enter a caption for the photo..."></textarea>
 
   <button>Add photo</button>
+
+
 </form>
 <%end%>
+
+
+
 <hr>
 
 <table border="1">
@@ -24,6 +32,9 @@
   </tr>
 
   <% @photos.each do |photo| %>
+
+  <% if photo.poster.private == true%>
+  <%else%>
   <tr>
     <td>
       <img src="<%= photo.image %>">
@@ -52,6 +63,6 @@
       </a>
     </td>
   </tr>
-  
+  <%end%>
   <% end %>
 </table>

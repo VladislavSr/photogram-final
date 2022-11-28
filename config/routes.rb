@@ -6,6 +6,8 @@ Rails.application.routes.draw do
   get("/users", { :controller => "users", :action => "index" })
   get("/users/:the_username", { :controller => "users", :action => "show" })
 
+  get("/users/:the_username/feed", { :controller => "users", :action => "feed" })
+
   # Routes for the Comment resource:
 
   # CREATE
@@ -66,7 +68,7 @@ Rails.application.routes.draw do
   # Routes for the Photo resource:
 
   # CREATE
-  get("/insert_photo_record", { :controller => "photos", :action => "create" })
+  post("/insert_photo_record", { :controller => "photos", :action => "create" })
 
   # READ
   get("/", { :controller => "photos", :action => "index" })
@@ -109,6 +111,7 @@ Rails.application.routes.draw do
   # SIGN OUT
   get("/user_sign_out", { :controller => "user_authentication", :action => "destroy_cookies" })
 
+  get("/insert_comment_record", :controller => "comments", :action => "comment")
   #------------------------------
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

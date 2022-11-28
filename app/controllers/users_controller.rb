@@ -1,6 +1,4 @@
 class UsersController < ApplicationController
-
-  
   def index
     @users = User.all.order({ :username => :asc })
 
@@ -9,9 +7,27 @@ class UsersController < ApplicationController
 
   def show
     the_username = params.fetch("the_username")
+
     @user = User.where({ :username => the_username }).at(0)
 
-    render({ :template => "users/show.html.erb" })
+    if @user.private == true and @user.id != session.fetch(:user_id)
+      redirect_to("/", { :notice => "You're not authorized for that." })
+    else
+      render({ :template => "users/show.html.erb" })
+    end
+  end
+
+  def feed
+    the_username = params.fetch("the_username")
+
+    @user = User.where({ :username => the_username }).at(0)
+    @Likedphotos = Like.where({ :Fan_id => @user.id })
+
+    if @user.private == true and @user.id != session.fetch(:user_id)
+      redirect_to("/", { :notice => "You're not authorized for that." })
+    else
+      render({ :template => "users/feed.html.erb" })
+    end
   end
 
   def update

@@ -55,4 +55,43 @@ class CommentsController < ApplicationController
 
     redirect_to("/comments", { :notice => "Comment deleted successfully."} )
   end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  def comment
+    photo_id = params.fetch("input_photo_id")
+    auth_id = session[:user_id]
+    comments = params.fetch("input_body")
+
+    a_new_comment = Comment.new
+    a_new_comment.photo_id = photo_id
+    a_new_comment.body = comments
+    a_new_comment.author_id = auth_id
+
+    a_new_comment.save
+
+    #render({ :template => "photo_templates/create.html.erb" })
+    redirect_to("/photos/" + a_new_comment.photo_id.to_s)
+  end
+
 end

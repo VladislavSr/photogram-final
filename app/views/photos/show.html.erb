@@ -1,7 +1,11 @@
+
+
+
 <div>
   <div>
     <h1>
-      Photo #<%= @the_photo.id %> details
+      Photo Details
+    
     </h1>
 
     <div>
@@ -11,12 +15,6 @@
         </a>
       </div>
 
-      <div>
-        <a href="/delete_photo/<%= @the_photo.id %>">
-          Delete photo
-        </a>
-      </div>
-    </div>
 
     <dl>
       <dt>
@@ -37,7 +35,8 @@
         Image
       </dt>
       <dd>
-        <%= @the_photo.image %>
+      <img src="<%= @the_photo.image %>" class="img-responsive">
+        
       </dd>
 
       <dt>
@@ -51,7 +50,7 @@
         Owner
       </dt>
       <dd>
-        <%= @the_photo.owner_id %>
+        <%= @the_photo.poster.username %>
       </dd>
 
       <dt>
@@ -67,6 +66,57 @@
       <dd>
         <%= time_ago_in_words(@the_photo.updated_at) %> ago
       </dd>
+
+
+
+  <dt>Fans</dt>
+  <dd>
+    tyree, vanetta, judith, robin, and debbi
+  </dd>
+
+<%check = Like.where({:fan_id => session[:user_id]})
+
+  if check == nil %>
+
+  <dt>Add a fan</dt>
+  <dd>
+
+    <form action="/insert_like" method="post">
+      <input type="hidden" value="<%=@the_photo.id%>" name="query_photo_id">
+      <button>Like</button>
+    </form>
+  </dd>
+
+<%else%>
+<%if check.where({:photo_id => @the_photo.id}).at(0) == nil%>
+  <dt>Add a fan</dt>
+  <dd>
+
+    <form action="/insert_like" method="post">
+      <input type="hidden" value="<%=@the_photo.id%>" name="query_photo_id">
+      <button>Like</button>
+    </form>
+  </dd>
+  <%else%>
+
+    <%hashlike = Like.where({:fan_id => @current_user.id}).where({:photo_id => @the_photo.id}).at(0)%>
+
+  
+  <dd>
+ 
+
+             <a href="/delete_like/<%=hashlike.id%>">
+          Unlike
+        </a>
+
+
+      <button>Unfollow</button>
+    </form>
+  </dd>
+<%end%>
+<%end%>
+
+
     </dl>
   </div>
 </div>
@@ -128,4 +178,62 @@
   </div>
 </div>
 
+
+<% if @the_photo.owner_id==session[:user_id]%>
+
+      <div>
+        <a href="/delete_photo/<%= @the_photo.id %>">
+          Delete this photo
+        </a>
+      </div>
+    </div>
+  <%else%>
+
+  <%end%>
+
 <hr>
+
+
+
+
+
+<h2>Comments</h2>
+
+<table>
+  <tr>
+    <th>Commenter</th>
+    <th>Comment</th>
+    <th>Posted</th>
+  </tr>
+
+<% @the_photo.comments.each do |a_comment| %>
+  <tr>
+    <td>
+      <%= a_comment.commenter.username%>
+    </td>
+
+    <td>
+      <%= a_comment.body%>
+    </td>
+
+    <td>
+      <%= a_comment.created_at%>
+    </td>
+  </tr>
+  <% end %>
+  </table>
+
+
+
+<h3>Add a new comment</h3>
+
+<form action="/insert_comment_record">
+
+  
+  <input id="browser_photo_id" type="hidden" value="<%=@the_photo.id%>" name="input_photo_id">
+
+  <label for="browser_comment">Comment</label>
+  <textarea id="browser_comment" name="input_body" placeholder="Enter a comment..."></textarea>
+
+  <button>Add comment</button>
+</form>

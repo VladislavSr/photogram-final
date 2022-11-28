@@ -29,6 +29,7 @@ class User < ApplicationRecord
     return Photo.where({ :owner_id => self.id })
   end
 
+
   def likes
     return Like.where({ :fan_id => self.id })
   end
@@ -59,6 +60,10 @@ class User < ApplicationRecord
 
   def accepted_received_follow_requests
     return self.received_follow_requests.where({ :status => "accepted" })
+  end
+
+  def pending_received_follow_requests
+    return self.received_follow_requests.where({ :status => "pending" })
   end
 
   def followers

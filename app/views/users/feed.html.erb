@@ -53,18 +53,8 @@
   <dt>Following</dt>
   <dd><%= FollowRequest.where(:sender_id => @user.id).where(:status => "accepted").count %></dd>
 
-  <dt>Pending follow requests</dt>
-  <%@user.pending_received_follow_requests%>
 
 
-  <% @user.pending_received_follow_requests.each do |request| %>
-
-  <% @Follower = User.where(:id => request.sender_id).at(0)%>
-  <%=@Follower.username%> 
-
-  <%end%>
- 
-  
 <% if session.fetch(:username) == @user.username %>
 
 
@@ -83,7 +73,8 @@
 
 </dl>
 
-<h2>Own photos (<%= @user.own_photos.count %>)</h2>
+
+<h2>Feed (<%=@Likedphotos.count %>)</h2>
 
 <table border="1">
   <tr>
@@ -112,7 +103,15 @@
     <th></th>
   </tr>
 
-  <% @user.own_photos.each do |photo| %>
+
+
+
+
+
+
+
+<%@user.feed.each do |photo| %>
+
   <tr>
     <td>
       <img src="<%= photo.image %>">
@@ -144,7 +143,6 @@
       <%else%>
       Just now
       <%end%>
-      
     </td>
     
 
